@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Solves the lock boxes puzzle """
+"""function that Solves the lock boxes puzzle """
 
 
 def look_next_opened_box(opened_boxes):
@@ -17,7 +17,7 @@ def look_next_opened_box(opened_boxes):
 
 
 def canUnlockAll(boxes):
-    """Check if all boxes can be opened
+    """function that Checks if all boxes can be opened
     Args:
         boxes (list): List which contain all the boxes with the keys
     Returns:
