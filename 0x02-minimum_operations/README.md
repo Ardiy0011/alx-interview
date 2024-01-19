@@ -1,0 +1,1 @@
+Tasks for mini operations
