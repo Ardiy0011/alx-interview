@@ -1,53 +1,55 @@
-#!/usr/bin/env python3
-""" function that reads stdin line by line and computes metrics """
+#!/usr/bin/python3
+"""function that reads stdin line by line and computes metrics"""
 
 import sys
 
 
-def process_line(line):
-    # Split the line into components
-    parts = line.split()
+def print_msg(dict_sc, total_file_size):
+    """
+    Method to print
+    Args:
+        dict_sc: dict of status codes
+        total_file_size: total of the file
+    Returns:
+        Nothing
+    """
 
-    # Check if the line matches the expected format
-    if len(parts) >= 9 and parts[5].isdigit() and parts[8].isdigit():
-        return int(parts[8]), int(parts[5])
-
-    return None, None
-
-
-def print_statistics(total_size, status_counts):
-    print(f'Total file size: {total_size}')
-    for status_code in sorted(status_counts):
-        print(f'{status_code}: {status_counts[status_code]}')
-
-
-def main():
-    total_size = 0
-    status_counts = {}
-
-    try:
-        for i, line in enumerate(sys.stdin, start=1):
-            # Process each line
-            file_size, status_code = process_line(line)
-
-            if file_size is not None and status_code is not None:
-                # Update total file size
-                total_size += file_size
-
-                # Update status code counts
-                status_counts[status_code] = status_counts.get(
-                    status_code, 0) + 1
-
-            # Print statistics every 10 lines
-            if i % 10 == 0:
-                print_statistics(total_size, status_counts)
-    except KeyboardInterrupt:
-        # Handle keyboard interruption (CTRL + C)
-        pass
-    finally:
-        # Print final statistics
-        print_statistics(total_size, status_counts)
+    print("File size: {}".format(total_file_size))
+    for key, val in sorted(dict_sc.items()):
+        if val != 0:
+            print("{}: {}".format(key, val))
 
 
-if __name__ == "__main__":
-    main()
+total_file_size = 0
+code = 0
+counter = 0
+dict_sc = {"200": 0,
+           "301": 0,
+           "400": 0,
+           "401": 0,
+           "403": 0,
+           "404": 0,
+           "405": 0,
+           "500": 0}
+
+try:
+    for line in sys.stdin:
+        parsed_line = line.split()
+        parsed_line = parsed_line[::-1]
+
+        if len(parsed_line) > 2:
+            counter += 1
+
+            if counter <= 10:
+                total_file_size += int(parsed_line[0])
+                code = parsed_line[1]
+
+                if (code in dict_sc.keys()):
+                    dict_sc[code] += 1
+
+            if (counter == 10):
+                print_msg(dict_sc, total_file_size)
+                counter = 0
+
+finally:
+    print_msg(dict_sc, total_file_size)
