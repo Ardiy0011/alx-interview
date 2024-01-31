@@ -21,13 +21,17 @@ def validUTF8(data):
                 return False
 
         elif (byte & 0b11110000) == 0b11100000:
-            if i + 2 < len(data) and isContinuation(data[i + 1]) and isContinuation(data[i + 2]):
+            if i + 2 < len(data) and isContinuation(
+                data[i + 1]) and isContinuation(
+                    data[i + 2]):
                 i += 3
             else:
                 return False
 
         elif (byte & 0b11111000) == 0b11110000:
-            if i + 3 < len(data) and isContinuation(data[i + 1]) and isContinuation(data[i + 2]) and isContinuation(data[i + 3]):
+            if i + 3 < len(data) and isContinuation(
+                data[i + 1]) and isContinuation(
+                    data[i + 2]) and isContinuation(data[i + 3]):
                 i += 4
             else:
                 return False
