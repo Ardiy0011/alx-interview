@@ -2,15 +2,15 @@
 
 const request = require('request');
 
-const args = 'https://swapi-api.hbtn.io/api/films/';
-request(`${args}` + process.argv[2], function (err, res, body) {
+const url = 'https://swapi-api.hbtn.io/api/films/';
+request(`${url}` + process.argv[2], function (err, body) {
   if (err) throw err;
-  const actors = JSON.parse(body).characters;
-  exactOrder(actors, 0);
+  const actorsto = JSON.parse(body).characters;
+  exactOrder(actorsto, 0);
 });
 const exactOrder = (actors, x) => {
   if (x === actors.length) return;
-  request(actors[x], function (err, res, body) {
+  request(actors[x], function (err, body) {
     if (err) throw err;
     console.log(JSON.parse(body).name);
     exactOrder(actors, x + 1);
